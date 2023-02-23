@@ -1,14 +1,14 @@
+import Notiflix from 'notiflix';
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
 
-const buttonStartEl = document.querySelector('[data-start]');
-const daysEl = document.querySelector('[data-days]');
-const hoursEl = document.querySelector('[data-hours]');
-const minutesEl = document.querySelector('[data-minutes]');
-const secondsEl = document.querySelector('[data-seconds]');
 
+const buttonStartEl = document.querySelector('[data-start]');
 buttonStartEl.disabled = true;
 buttonStartEl.addEventListener('click', onButtonStart);
+
+
+// Ініціалізація бібліотеки flatpickr
 
 const options = {
   enableTime: true,
@@ -22,11 +22,14 @@ const options = {
       options.startTime = selectedDates[0].getTime();
       return;
     }
-    window.alert('Please choose a date in the future');
+    Notiflix.Notify.failure('Please choose a date in the future');
   },
 };
 
 const fp = flatpickr('#datetime-picker', options);
+
+
+// Об'єкт з властивостями та методами для таймеру
 
 const timer = {
   isActive: false,
@@ -45,10 +48,12 @@ const timer = {
       }
       const time = convertMs(ms);
       updateTimerFace(time);
-      console.log(time);
     }, 1000);
   },
 };
+
+
+// Функції
 
 function onButtonStart() {
   timer.start();
@@ -80,6 +85,11 @@ function convertMs(ms) {
 }
 
 function updateTimerFace({ days, hours, minutes, seconds }) {
+  const daysEl = document.querySelector('[data-days]');
+  const hoursEl = document.querySelector('[data-hours]');
+  const minutesEl = document.querySelector('[data-minutes]');
+  const secondsEl = document.querySelector('[data-seconds]');
+
   daysEl.textContent = `${days}`;
   hoursEl.textContent = `${hours}`;
   minutesEl.textContent = `${minutes}`;
